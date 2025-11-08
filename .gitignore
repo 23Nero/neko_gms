@@ -1,0 +1,30 @@
+# Build artifacts
+build/
+out/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Qt Creator / IDE user-specific files
+CMakeLists.txt.user
+*.pro.user
+*.pro.user.*
+*.qmlproject.user
+*.qmlproject.user.*
+
+# Visual Studio
+.vs/
+*.VC.db
+*.VC.opendb
+
+# Other IDE cache
+.idea/
+.vscode/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
