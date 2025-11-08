@@ -53,9 +53,9 @@ Rectangle {
         case "W":
             return "#ffff80";
         case "I":
-            return "#78d0ff";
-        case "D":
             return "#b4f0a0";
+        case "D":
+            return "#78d0ff";
         case "V":
             return "#ff79c6";
         default:
@@ -235,7 +235,7 @@ Rectangle {
                 clip: true
                 contentWidth: messageContent.width
                 contentHeight: messageContent.height
-                flickableDirection: Flickable.HorizontalAndVertical
+                flickableDirection: Flickable.HorizontalAndVerticalFlick
                 onContentYChanged: syncScrollPosition(messageList.contentY)
                 ScrollBar.vertical: ScrollBar {
                     policy: ScrollBar.AsNeeded
