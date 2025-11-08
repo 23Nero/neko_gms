@@ -5,12 +5,21 @@ import "log_patterns/index.js" as LogPatterns
 
 Rectangle {
     id: logView
+    focus: true
+    activeFocusOnTab: true
     property string source: ""
     property color panelColor: "#1e2127"
     property color dividerColor: "#1e2127"
     property color textPrimary: "#abb2bf"
     property color textSecondary: "#5c6370"
     property var logPatterns: LogPatterns.all()
+    property real zoomFactor: 1.0
+    property real minZoomFactor: 0.5
+    property real maxZoomFactor: 3.0
+    property real zoomStep: 1.1
+    readonly property int baseFontPixelSize: 14
+    readonly property int baseLineColumnWidth: 52
+    readonly property int baseSpacing: 4
 
     signal errorOccurred(string message)
 
@@ -43,6 +52,26 @@ Rectangle {
             raw: trimmed,
             level: ""
         };
+    }
+
+    function contentPadding() {
+        return Math.round(baseSpacing * zoomFactor)
+    }
+
+    function setZoomFactor(value) {
+        var clamped = Math.max(minZoomFactor, Math.min(maxZoomFactor, value))
+        if (Math.abs(clamped - zoomFactor) < 0.001) {
+            return
+        }
+        zoomFactor = clamped
+    }
+
+    function zoomIn() {
+        setZoomFactor(zoomFactor * zoomStep)
+    }
+
+    function zoomOut() {
+        setZoomFactor(zoomFactor / zoomStep)
     }
 
     function levelColor(level) {
@@ -150,7 +179,10 @@ Rectangle {
     }
 
     onSourceChanged: loadLogFile()
-    Component.onCompleted: loadLogFile()
+    Component.onCompleted: {
+        loadLogFile()
+        logView.forceActiveFocus()
+    }
 
     property bool _syncingScroll: false
 
@@ -173,7 +205,69 @@ Rectangle {
         _syncingScroll = false;
     }
 
-    property int lineColumnWidth: 52
+    property int lineColumnWidth: Math.max(32, Math.round(baseLineColumnWidth * zoomFactor))
+
+    onZoomFactorChanged: {
+        if (messageList) {
+            messageList.maxLineWidth = 0
+            messageList.resetMaxWidth()
+        }
+        if (lineList) {
+            lineList.forceLayout()
+        }
+    }
+
+    WheelHandler {
+        id: zoomWheelHandler
+        acceptedModifiers: Qt.ControlModifier
+        onWheel: {
+            var delta = 0
+            if (wheel.angleDelta && wheel.angleDelta.y !== undefined) {
+                delta = wheel.angleDelta.y
+            } else if (wheel.pixelDelta && wheel.pixelDelta.y !== undefined) {
+                delta = wheel.pixelDelta.y
+            }
+            if (delta === 0) {
+                return
+            }
+            if (delta > 0) {
+                logView.zoomIn()
+            } else if (delta < 0) {
+                logView.zoomOut()
+            }
+            wheel.accepted = true
+        }
+    }
+
+    Shortcut {
+        sequences: [StandardKey.ZoomIn, StandardKey.IncreaseFont, "Ctrl++", "Ctrl+=", "Ctrl+Plus", "Ctrl+Shift+="]
+        context: Qt.ApplicationShortcut
+        onActivated: logView.zoomIn()
+    }
+
+    Shortcut {
+        sequences: [StandardKey.ZoomOut, StandardKey.DecreaseFont, "Ctrl+-", "Ctrl+Shift+-", "Ctrl+_", "Ctrl+Minus", "Ctrl+Subtract"]
+        context: Qt.ApplicationShortcut
+        onActivated: logView.zoomOut()
+    }
+
+    Keys.onPressed: function(event) {
+        if (!(event.modifiers & Qt.ControlModifier)) {
+            return
+        }
+        if (event.key === Qt.Key_Plus || event.key === Qt.Key_Equal || event.key === Qt.Key_PlusMinus || event.key === Qt.Key_NumpadAdd) {
+            console.log("Keys handler caught zoom in:", event.key)
+            logView.zoomIn()
+            event.accepted = true
+            return
+        }
+        if (event.key === Qt.Key_Minus || event.key === Qt.Key_Underscore || event.key === Qt.Key_NumpadSubtract) {
+            console.log("Keys handler caught zoom out:", event.key)
+            logView.zoomOut()
+            event.accepted = true
+            return
+        }
+    }
 
     RowLayout {
         anchors.fill: parent
@@ -191,9 +285,9 @@ Rectangle {
             ListView {
                 id: lineList
                 anchors.fill: parent
-                anchors.margins: 4
+                anchors.margins: logView.contentPadding()
                 clip: true
-                spacing: 4
+                spacing: Math.max(2, Math.round(baseSpacing * zoomFactor))
                 model: logModel
                 reuseItems: true
                 interactive: false
@@ -204,11 +298,11 @@ Rectangle {
                 }
 
                 delegate: Text {
-                    width: lineColumn.width - 8
+                    width: Math.max(lineColumn.width - 2 * logView.contentPadding(), 0)
                     color: textSecondary
                     text: lineNumber
                     font.family: "Courier New"
-                    font.pixelSize: 14
+                    font.pixelSize: Math.round(baseFontPixelSize * zoomFactor)
                     horizontalAlignment: Text.AlignLeft
                 }
             }
@@ -231,7 +325,7 @@ Rectangle {
             Flickable {
                 id: messageList
                 anchors.fill: parent
-                anchors.margins: 4
+                anchors.margins: logView.contentPadding()
                 clip: true
                 contentWidth: messageContent.width
                 contentHeight: messageContent.height
@@ -248,8 +342,8 @@ Rectangle {
 
                 Column {
                     id: messageContent
-                    width: Math.max(messageColumn.width - 8, messageList.maxLineWidth)
-                    spacing: 4
+                    width: Math.max(messageColumn.width - 2 * logView.contentPadding(), messageList.maxLineWidth)
+                    spacing: Math.max(2, Math.round(baseSpacing * zoomFactor))
 
                     Repeater {
                         id: messageRepeater
@@ -261,7 +355,7 @@ Rectangle {
 
                             Row {
                                 id: logRow
-                                spacing: model.time ? 12 : 0
+                                spacing: model.time ? Math.max(4, Math.round(12 * zoomFactor)) : 0
                                 anchors.verticalCenter: parent.verticalCenter
 
                                 Text {
@@ -270,7 +364,7 @@ Rectangle {
                                     color: "#ffffff"
                                     text: model.time || ""
                                     font.family: "Courier New"
-                                    font.pixelSize: 14
+                                    font.pixelSize: Math.round(baseFontPixelSize * zoomFactor)
                                     wrapMode: Text.NoWrap
                                 }
 
@@ -279,7 +373,7 @@ Rectangle {
                                     color: levelColor(model.level)
                                     text: buildBody(model)
                                     font.family: "Courier New"
-                                    font.pixelSize: 14
+                                    font.pixelSize: Math.round(baseFontPixelSize * zoomFactor)
                                     wrapMode: Text.NoWrap
                                 }
 
@@ -290,18 +384,16 @@ Rectangle {
                     }
                 }
 
-                property real maxLineWidth: messageColumn.width - 8
+                property real maxLineWidth: 0
 
                 function updateMaxLineWidth(w) {
                     if (w > maxLineWidth) {
                         maxLineWidth = w;
-                        contentWidth = messageContent.width;
                     }
                 }
 
                 function resetMaxWidth() {
-                    maxLineWidth = messageColumn.width - 8;
-                    contentWidth = messageContent.width;
+                    maxLineWidth = 0;
                 }
             }
         }

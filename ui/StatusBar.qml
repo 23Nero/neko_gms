@@ -9,6 +9,8 @@ ToolBar {
     property color panelColor: "#282c34"
     property color dividerColor: "#3e4451"
     property color textSecondary: "#5c6370"
+    property font iconFont: Qt.font({ family: "Segoe Fluent Icons", pointSize: 16 })
+    property Component rightExtras: null
 
     property string fileLabel: qsTr("File: sample.log")
     property string lineLabel: qsTr("Line 1 / 12")
@@ -185,6 +187,12 @@ ToolBar {
                 verticalAlignment: Text.AlignVCenter
                 Layout.alignment: Qt.AlignVCenter
                 Layout.preferredHeight: statusBar.contentHeight
+            }
+
+            Loader {
+                id: extrasLoader
+                Layout.alignment: Qt.AlignVCenter
+                sourceComponent: statusBar.rightExtras
             }
         } // Hết RowLayout (nhóm phải)
     } // Hết contentItem
