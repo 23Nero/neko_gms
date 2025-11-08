@@ -231,12 +231,12 @@ Rectangle {
         Rectangle { Layout.fillWidth: true; height: 1; color: borderColor }
         ListModel {
             id: highlightModel
-            ListElement { hexColor: "#61afef"; text: "" } // Info
-            ListElement { hexColor: "#98c379"; text: "" } // Debug
-            ListElement { hexColor: "#c678dd"; text: "" } // Verbose
-            ListElement { hexColor: "#e06c75"; text: "" } // Error
-            ListElement { hexColor: "#e5c07b"; text: "" } // Warning
-            ListElement { hexColor: "#d19a66"; text: "" } // Secondary
+            ListElement { hexColor: "#78d0ff"; text: "" } // Info
+            ListElement { hexColor: "#b4f0a0"; text: "" } // Debug
+            ListElement { hexColor: "#ff79c6"; text: "" } // Verbose
+            ListElement { hexColor: "#ff6b6b"; text: "" } // Error
+            ListElement { hexColor: "#ffff80"; text: "" } // Warning
+            ListElement { hexColor: "#ff9e64"; text: "" } // Secondary
         }
 
         RowLayout {

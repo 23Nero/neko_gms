@@ -49,18 +49,48 @@ Rectangle {
         switch (level) {
         case "F":
         case "E":
-            return "#e06c75";
+            return "#ff6b6b";
         case "W":
-            return "#e5c07b";
+            return "#ffff80";
         case "I":
-            return "#61afef";
+            return "#78d0ff";
         case "D":
-            return "#98c379";
+            return "#b4f0a0";
         case "V":
-            return "#c678dd";
+            return "#ff79c6";
         default:
             return textPrimary;
         }
+    }
+
+    function buildBody(entry) {
+        if (!entry) {
+            return "";
+        }
+        if (!entry.time && entry.raw) {
+            return entry.raw;
+        }
+
+        var parts = [];
+        if (entry.pid) {
+            parts.push(entry.pid);
+        }
+        if (entry.tid) {
+            parts.push(entry.tid);
+        }
+        if (entry.level) {
+            parts.push(entry.level);
+        }
+        if (entry.tag) {
+            parts.push(entry.tag + ":");
+        }
+        if (entry.message) {
+            parts.push(entry.message);
+        } else if (entry.raw) {
+            parts.push(entry.raw);
+        }
+
+        return parts.join(" ");
     }
 
     function loadLogFile() {
@@ -227,16 +257,32 @@ Rectangle {
 
                         Item {
                             width: messageContent.width
-                            height: logText.implicitHeight
+                            height: logRow.implicitHeight
 
-                            Text {
-                                id: logText
+                            Row {
+                                id: logRow
+                                spacing: model.time ? 12 : 0
                                 anchors.verticalCenter: parent.verticalCenter
-                                color: levelColor(model.level)
-                                text: model.raw || model.message || ""
-                                font.family: "Courier New"
-                                font.pixelSize: 14
-                                wrapMode: Text.NoWrap
+
+                                Text {
+                                    id: timeText
+                                    visible: model.time !== undefined
+                                    color: "#ffffff"
+                                    text: model.time || ""
+                                    font.family: "Courier New"
+                                    font.pixelSize: 14
+                                    wrapMode: Text.NoWrap
+                                }
+
+                                Text {
+                                    id: logText
+                                    color: levelColor(model.level)
+                                    text: buildBody(model)
+                                    font.family: "Courier New"
+                                    font.pixelSize: 14
+                                    wrapMode: Text.NoWrap
+                                }
+
                                 onImplicitWidthChanged: messageList.updateMaxLineWidth(implicitWidth)
                                 Component.onCompleted: messageList.updateMaxLineWidth(implicitWidth)
                             }
