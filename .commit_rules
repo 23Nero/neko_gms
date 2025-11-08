@@ -1,0 +1,38 @@
+Commit Message Rules
+
+A standard commit message includes a concise subject line (max 50 characters, capitalized, imperative mood, no trailing period) followed by a detailed body separated by a blank line explaining what, why, and how the change was made.
+
+Basic Structure
+
+Part 1: Subject
+
+Type: Commit category (e.g., feat, fix, docs, style, refactor, test, chore).
+Scope: Affected area (e.g., frontend, backend, API, auth) (optional).
+Description: Short summary of the change, no more than 50 characters.
+
+Rules:
+- Capitalize the first letter.
+- Use present-tense imperative verbs (e.g., "Add" instead of "Added").
+- Do not end the subject line with a period.
+
+Part 2: Blank Line
+Separate the subject from the body with a single blank line.
+
+Part 3: Detailed Body
+Explain what was changed, why it was necessary, and how it was implemented.
+Wrap each line at 72 characters for readability.
+
+Example
+
+feat(auth): Add Google sign-in support
+
+[description]
+
+- Update dependent libraries.
+- Integrate Google sign-in API.
+- Handle error cases and show helpful user messages.
+
+[impacted files]
+
+- Manager.cpp
+- Main.qml
