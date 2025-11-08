@@ -6,8 +6,8 @@ ToolBar {
     id: toolbar
 
     // Exposed palette values with sensible defaults, can be overridden by parent.
-    property color panelAccentColor: "#1a2946"
-    property color textPrimary: "#e9f2ff"
+    property color panelAccentColor: "#353b45"
+    property color textPrimary: "#abb2bf"
     property font iconFont: Qt.font({ family: "Segoe Fluent Icons", pointSize: 16 })
     // Heights used for the resize interaction.
     property real minHeight: 30
@@ -42,12 +42,8 @@ ToolBar {
                 "\uE721", // play
                 "\uE769", // pause
                 "\uE73E", // stop
-                "\uE8B2", // view
                 "\uE8B5", // filter
                 "\uE8B6", // search
-                "\uE8A2", // zoom in
-                "\uE71E", // zoom out
-                "\uEE72"  // usb/device
             ]
             // Each icon button respects the computed size and reuses the shared palette.
             delegate: ToolButton {
@@ -55,8 +51,8 @@ ToolBar {
                 Layout.preferredHeight: toolbar.iconButtonSize
                 background: Rectangle {
                     radius: 6
-                    color: pressed ? "#28426a" : hovered ? "#22365a" : "transparent"
-                    border.color: hovered ? "#33517d" : "transparent"
+                    color: pressed ? "#3f4754" : hovered ? "#3a404c" : "transparent"
+                    border.color: hovered ? "#4b5261" : "transparent"
                 }
                 contentItem: Label {
                     text: modelData
@@ -73,9 +69,8 @@ ToolBar {
             Layout.preferredWidth: toolbar.iconButtonSize
             Layout.preferredHeight: toolbar.iconButtonSize
             background: Rectangle {
-                // Circular avatar uses the provided app icon as background.
                 radius: toolbar.iconButtonSize / 2
-                border.color: "#2f4a7a"
+                border.color: "#4b5261"
                 clip: true
 
                 Image {

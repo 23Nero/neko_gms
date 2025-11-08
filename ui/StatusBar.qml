@@ -6,9 +6,9 @@ ToolBar {
     id: statusBar
 
     // Exposed palette and content properties so the parent can override them.
-    property color panelColor: "#1a2946"
-    property color dividerColor: "#2b4266"
-    property color textSecondary: "#c3d4f0"
+    property color panelColor: "#282c34"
+    property color dividerColor: "#3e4451"
+    property color textSecondary: "#5c6370"
 
     property string fileLabel: qsTr("File: sample.log")
     property string lineLabel: qsTr("Line 1 / 12")
@@ -137,8 +137,8 @@ ToolBar {
                     implicitWidth: 30
                     implicitHeight: 16
                     radius: height / 2
-                    color: trackTail.checked ? "#4c9bff" : "#f0f3fb"
-                    border.color: trackTail.checked ? "#4c9bff" : "#c6d0e5"
+                    color: trackTail.checked ? "#61afef" : "#3e4451"
+                    border.color: trackTail.checked ? "#61afef" : "#4b5261"
                     y: (parent.height - height) / 2
                     layer.enabled: true
                     layer.smooth: true
@@ -154,8 +154,8 @@ ToolBar {
                         radius: height / 2
                         anchors.verticalCenter: parent.verticalCenter
                         x: trackTail.checked ? parent.width - width - 2 : 2
-                        color: "white"
-                        border.color: trackTail.checked ? "#cfe4ff" : "#d8dfee"
+                        color: "#abb2bf"
+                        border.color: trackTail.checked ? "#61afef" : "#4b5261"
                         opacity: hoverHandler.hovered ? 0.94 : 1.0
 
                         Behavior on x { NumberAnimation { duration: 160; easing.type: Easing.InOutQuad } }
