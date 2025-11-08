@@ -75,12 +75,6 @@ Rectangle {
                 text: "\u25BE" // Ký tự mũi tên xuống
                 color: textColor
             }
-            TapHandler {
-                acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchScreen | PointerDevice.Stylus
-                enabled: comboControl.enabled
-                onTapped: comboControl.popup.open()
-                cursorShape: Qt.PointingHandCursor
-            }
         }
         popup: Popup {
             y: comboControl.height
@@ -92,6 +86,7 @@ Rectangle {
             }
             contentItem: ListView {
                 model: comboControl.delegateModel
+                implicitHeight: Math.min(contentHeight, 240)
                 delegate: ItemDelegate {
                     width: parent.width
                     text: modelData
