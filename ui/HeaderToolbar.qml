@@ -9,6 +9,7 @@ ToolBar {
     property color panelAccentColor: "#353b45"
     property color textPrimary: "#abb2bf"
     property font iconFont: Qt.font({ family: "Segoe Fluent Icons", pointSize: 16 })
+    signal actionTriggered(string action)
     // Heights used for the resize interaction.
     property real minHeight: 30
     property real maxHeight: 120
@@ -36,17 +37,18 @@ ToolBar {
 
         Repeater {
             model: [
-                "\uE74D", // folder open
-                "\uE8B7", // save
-                "\uE8AA", // refresh
-                "\uE721", // play
-                "\uE769", // pause
-                "\uE73E", // stop
-                "\uE8B5", // filter
-                "\uE8B6", // search
+                { icon: "\uE8F4", action: "open" }, // open folder
+                { icon: "\uE74E", action: "save" }, // save
+                { icon: "\uE768", action: "play" }, // play
+                { icon: "\uE769", action: "pause" }, // pause
+                { icon: "\uE72C", action: "refresh" }, // refresh
+                { icon: "\uE7F8", action: "showDevices" }, // devices
+                { icon: "\uE16E", action: "toggleFilter" }, // filter
             ]
             // Each icon button respects the computed size and reuses the shared palette.
             delegate: ToolButton {
+                readonly property string actionRole: modelData.action
+
                 Layout.preferredWidth: toolbar.iconButtonSize
                 Layout.preferredHeight: toolbar.iconButtonSize
                 background: Rectangle {
@@ -55,33 +57,16 @@ ToolBar {
                     border.color: hovered ? "#4b5261" : "transparent"
                 }
                 contentItem: Label {
-                    text: modelData
+                    text: modelData.icon
                     color: textPrimary
                     font.family: iconFont.family
                     font.pixelSize: toolbar.iconButtonSize * 0.6
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                 }
+                onClicked: toolbar.actionTriggered(actionRole)
             }
         }
-
-        ToolButton {
-            Layout.preferredWidth: toolbar.iconButtonSize
-            Layout.preferredHeight: toolbar.iconButtonSize
-            background: Rectangle {
-                radius: toolbar.iconButtonSize / 2
-                border.color: "#4b5261"
-                clip: true
-
-                Image {
-                    anchors.fill: parent
-                    fillMode: Image.PreserveAspectCrop
-                    smooth: true
-                }
-            }
-            contentItem: Item { }
-        }
-
         Item {
             Layout.fillWidth: true
         }
