@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import "."
+import "components"
 
 ApplicationWindow {
     id: root
@@ -18,25 +19,17 @@ ApplicationWindow {
     property color textSecondary: "#5c6370"
     property font iconFont: Qt.font({ family: "Segoe Fluent Icons", pointSize: 16 })
     property bool filterPanelVisible: true
-    property string deviceStatusText: qsTr("No device")
-
-    function fetchUsbDevices() {
-        console.log("Requesting USB device information")
-        deviceStatusText = qsTr("USB: scanning...")
-        // TODO: integrate with native backend to query actual USB devices.
-        // For now we provide a placeholder message.
-        Qt.callLater(() => deviceStatusText = qsTr("USB: no data"))
-    }
 
     header: HeaderToolbar {
         panelAccentColor: root.panelAccentColor
         textPrimary: root.textPrimary
         iconFont: root.iconFont
+        manager: deviceManager
         onActionTriggered: function(action) {
             if (action === "toggleFilter") {
                 root.filterPanelVisible = !root.filterPanelVisible
             } else if (action === "showDevices") {
-                root.fetchUsbDevices()
+                devicePicker.openAndRefresh()
             }
         }
     }
@@ -49,8 +42,8 @@ ApplicationWindow {
         fileLabel: qsTr("File: demo.log")
         lineLabel: qsTr("Line: None")
         formatLabel: qsTr("Format: ADB Log")
-        deviceCountLabel: qsTr("Devices: 0")
-        deviceStatusLabel: root.deviceStatusText
+        deviceCountLabel: deviceManager.deviceSummary
+        deviceStatusLabel: deviceManager.statusMessage
         trackTailChecked: true
         trackTailLabel: qsTr("Track Tail")
         zoomLabel: qsTr("Zoom: %1%").arg(Math.round(logView.zoomFactor * 100))
@@ -63,8 +56,8 @@ ApplicationWindow {
                     implicitHeight: 26
                     background: Rectangle {
                         radius: 4
-                        color: pressed ? "#3f4754" : hovered ? "#3a404c" : "transparent"
-                        border.color: hovered ? "#4b5261" : "transparent"
+                        color: parent.pressed ? "#3f4754" : parent.hovered ? "#3a404c" : "transparent"
+                        border.color: parent.hovered ? "#4b5261" : "transparent"
                     }
                     contentItem: Label {
                         text: "\uE71F" // zoom out
@@ -82,8 +75,8 @@ ApplicationWindow {
                     implicitHeight: 26
                     background: Rectangle {
                         radius: 4
-                        color: pressed ? "#3f4754" : hovered ? "#3a404c" : "transparent"
-                        border.color: hovered ? "#4b5261" : "transparent"
+                        color: parent.pressed ? "#3f4754" : parent.hovered ? "#3a404c" : "transparent"
+                        border.color: parent.hovered ? "#4b5261" : "transparent"
                     }
                     contentItem: Label {
                         text: "\uE8A3" // zoom in
@@ -126,5 +119,16 @@ ApplicationWindow {
             textSecondary: root.textSecondary
             source: "logs/test.log"
         }
+    }
+
+    DevicePicker {
+        id: devicePicker
+        manager: deviceManager
+        textPrimary: root.textPrimary
+        textSecondary: root.textSecondary
+        accentColor: "#61afef"
+        highlightColor: root.panelAccentColor
+        backgroundColor: root.panelColor
+        borderColor: root.dividerColor
     }
 }

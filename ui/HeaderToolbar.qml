@@ -9,6 +9,7 @@ ToolBar {
     property color panelAccentColor: "#353b45"
     property color textPrimary: "#abb2bf"
     property font iconFont: Qt.font({ family: "Segoe Fluent Icons", pointSize: 16 })
+    property var manager: null
     signal actionTriggered(string action)
     // Heights used for the resize interaction.
     property real minHeight: 30
@@ -53,8 +54,8 @@ ToolBar {
                 Layout.preferredHeight: toolbar.iconButtonSize
                 background: Rectangle {
                     radius: 6
-                    color: pressed ? "#3f4754" : hovered ? "#3a404c" : "transparent"
-                    border.color: hovered ? "#4b5261" : "transparent"
+                    color: parent.pressed ? "#3f4754" : parent.hovered ? "#3a404c" : "transparent"
+                    border.color: parent.hovered ? "#4b5261" : "transparent"
                 }
                 contentItem: Label {
                     text: modelData.icon

@@ -4,12 +4,22 @@ project(neko_gms VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Quick Concurrent)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(appneko_gms
     src/main.cpp
+    include/devices/DeviceManager.h
+    src/devices/DeviceManager.cpp
+    include/devices/DeviceService.h
+    src/devices/DeviceService.cpp
+    include/devices/DeviceTypes.h
+    include/devices/providers/DeviceProvider.h
+    include/devices/providers/AdbDeviceProvider.h
+    src/devices/providers/AdbDeviceProvider.cpp
+    include/devices/providers/UsbDeviceProvider.h
+    src/devices/providers/UsbDeviceProvider.cpp
 )
 
 qt_add_qml_module(appneko_gms
@@ -17,10 +27,15 @@ qt_add_qml_module(appneko_gms
     VERSION 1.0
     QML_FILES
         ui/Main.qml
+        ui/LogView.qml
+        ui/FilterPanel.qml
         ui/HeaderToolbar.qml
         ui/StatusBar.qml
+        ui/components/DevicePicker.qml
+        ui/log_patterns/index.js
     RESOURCES
         ui/icon/avatar.png
+        ui/logs/test.log
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -36,6 +51,13 @@ set_target_properties(appneko_gms PROPERTIES
 
 target_link_libraries(appneko_gms
     PRIVATE Qt6::Quick
+    PRIVATE Qt6::Concurrent
+)
+
+target_include_directories(appneko_gms
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
 include(GNUInstallDirs)
