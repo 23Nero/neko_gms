@@ -1,0 +1,135 @@
+12-15 14:23:45.103 1234 5678 I MainActivity: Application started
+12-15 14:23:45.236 1234 5678 D NetworkManager: Connecting to server
+12-15 14:23:46.179 1234 5678 E NetworkManager: Failed to connect: Network unreachable
+12-15 14:23:47.065 1234 5678 I MainActivity: User logged in successfully
+12-15 14:23:48.095 1234 5678 D DatabaseHelper: Query executed in 45ms
+12-15 14:23:49.093 1234 5678 V CacheManager: Cache hit for key: user_profile
+12-15 14:23:51.567 1234 5678 W MemoryManager: Memory usage at 85%
+12-15 14:23:52.134 1234 5678 E FileManager: Failed to read file: /data/config.json
+12-15 14:23:53.221 1234 5678 I NotificationService: Notification sent to user
+12-15 14:23:53.822 1234 5678 D LocationService: GPS location updated
+12-15 14:23:54.456 1234 5678 F CrashHandler: Fatal error: NullPointerException
+
+12-15 14:24:01.002 1234 5678 V CacheManager: Evicted expired entry: session_token_42
+12-15 14:24:03.319 1234 5678 D SyncService: Scheduled background sync in 15m
+12-15 14:24:05.881 1234 5678 I UserManager: Updated profile image for user_id=9981
+12-15 14:24:08.674 1234 5678 W MemoryManager: Memory usage at 92%, requesting GC
+12-15 14:24:09.110 1234 5678 E FileManager: Failed to write file: /data/cache/tmp_upload.bin
+12-15 14:24:10.512 1234 5678 D NetworkManager: Retrying request attempt=3 backoff=4s
+12-15 14:24:12.998 1234 5678 I NotificationService: Push delivered to 5 recipients
+12-15 14:24:15.437 1234 5678 V CacheManager: Prefetching assets for screen=dashboard
+12-15 14:24:18.204 1234 5678 D AnalyticsService: Batched 120 events into payload
+12-15 14:24:19.889 1234 5678 W PowerManager: Battery level low (15%), enabling saver mode
+12-15 14:24:21.765 1234 5678 E SyncService: Failed to upload metrics: http status=503
+12-15 14:24:24.390 1234 5678 I MainActivity: User navigated to Settings
+12-15 14:24:27.045 1234 5678 D SettingsViewModel: Applied theme change dark_mode=true
+12-15 14:24:29.602 1234 5678 V AnimationEngine: Frame time 16.6ms vsync_ok=true
+12-15 14:24:33.118 1234 5678 I UpdateManager: Downloading patch version 2.5.1 size=48MB
+12-15 14:24:35.947 1234 5678 W UpdateManager: Slow download speed detected avg=120KB/s
+12-15 14:24:40.512 1234 5678 E UpdateManager: Patch download aborted checksum mismatch
+12-15 14:24:45.001 1234 5678 F CrashHandler: Fatal error: std::bad_alloc while processing update
+
+12-15 14:24:47.332 2234 6789 V CacheManager: Warmed cache for preferences section
+12-15 14:24:48.921 2234 6789 D SyncService: Upload queue length 45 items
+12-15 14:24:50.418 2234 6789 I NotificationService: Local reminder scheduled id=rem-8844
+12-15 14:24:52.709 2234 6789 W PowerManager: CPU throttled due to thermal status=high
+12-15 14:24:53.808 2234 6789 E FileManager: Failed to delete temp file: /cache/tmp/tmp123.tmp
+12-15 14:24:54.912 2234 6789 F CrashHandler: Fatal error: stack overflow in WorkerThread-2
+12-15 14:24:58.021 2234 6789 V CacheManager: Purged 12 stale thumbnails
+12-15 14:25:00.442 2234 6789 D NetworkManager: Websocket reconnected latency=220ms
+12-15 14:25:02.113 2234 6789 I MainActivity: User switched to tab Reports
+12-15 14:25:04.805 2234 6789 W MemoryManager: Memory usage at 88%, trimming caches
+12-15 14:25:06.517 2234 6789 E SyncService: Conflict detected on record id=7743
+12-15 14:25:08.999 2234 6789 F CrashHandler: Fatal error: IllegalStateException in SyncLoop
+12-15 14:25:11.436 2234 6789 V AnimationEngine: Dropped frame detected frame=2201
+12-15 14:25:13.654 2234 6789 D DatabaseHelper: Vacuum completed in 132ms
+12-15 14:25:16.287 2234 6789 I LocationService: GeoFence triggered region=office
+12-15 14:25:18.904 2234 6789 W PowerManager: App requested high-performance mode
+12-15 14:25:20.512 2234 6789 E UpdateManager: Signature verification failed package=delta.zip
+12-15 14:25:22.904 2234 6789 F CrashHandler: Fatal error: std::runtime_error 'Update failed'
+12-15 14:25:25.117 2234 6789 V CacheManager: Prefetched widget assets
+12-15 14:25:27.364 2234 6789 D SyncService: Retry scheduled in 5s reason=server-busy
+12-15 14:25:29.678 2234 6789 I NotificationService: Displayed toast 'Sync delayed'
+12-15 14:25:31.902 2234 6789 W MemoryManager: Page cache nearing limit
+12-15 14:25:34.145 2234 6789 E FileManager: Unable to move file to /data/media/
+12-15 14:25:36.468 2234 6789 F CrashHandler: Fatal error: signal SIGABRT (abort)
+12-15 14:25:38.703 2234 6789 V CacheManager: Cache hit ratio 82% window=15m
+12-15 14:25:40.925 2234 6789 D NetworkManager: Download chunk received size=2MB
+12-15 14:25:43.187 2234 6789 I MainActivity: User opened Help dialog
+12-15 14:25:45.509 2234 6789 W PowerManager: App prevented sleep reason=critical-task
+12-15 14:25:47.761 2234 6789 E SyncService: Request timed out endpoint=/api/records
+12-15 14:25:49.982 2234 6789 F CrashHandler: Fatal error: BrokenPipeException
+12-15 14:25:52.274 2234 6789 V CacheManager: Trimmed asset prefetch queue
+12-15 14:25:54.505 2234 6789 D AnalyticsService: Uploaded 250KB analytics payload
+12-15 14:25:56.819 2234 6789 I MainActivity: User closed Help dialog
+12-15 14:25:59.123 2234 6789 W MemoryManager: Large bitmap allocation detected size=32MB
+12-15 14:26:01.457 2234 6789 E FileManager: Storage not writable, status=read-only
+12-15 14:26:03.780 2234 6789 F CrashHandler: Fatal error: Unhandled promise rejection
+12-15 14:26:06.094 2234 6789 V AnimationEngine: Layout recalculated items=135
+12-15 14:26:08.372 2234 6789 D SyncService: Diagnostics report collected
+12-15 14:26:10.641 2234 6789 I NotificationService: Push ack received from device=tablet-42
+12-15 14:26:12.914 2234 6789 W PowerManager: Background service exceeded cpu budget
+12-15 14:26:15.235 2234 6789 E UpdateManager: Download retry limit reached
+12-15 14:26:17.556 2234 6789 F CrashHandler: Fatal error: Assertion failed line=482
+12-15 14:26:19.878 2234 6789 V CacheManager: Cleared 6MB of shader cache
+12-15 14:26:22.109 2234 6789 D NetworkManager: Firmware update ping success
+12-15 14:26:24.331 2234 6789 I MainActivity: User launched diagnostics screen
+12-15 14:26:26.553 2234 6789 W MemoryManager: Triggered soft reboot suggestion
+12-15 14:26:28.774 2234 6789 E SyncService: Failed to parse server response JSON
+12-15 14:26:31.005 2234 6789 F CrashHandler: Fatal error: std::length_error in parser
+12-15 14:26:33.237 2234 6789 V CacheManager: Cache rebuild started
+12-15 14:26:35.469 2234 6789 D AnalyticsService: Session metrics saved locally
+12-15 14:26:37.700 2234 6789 I NotificationService: Badge count updated value=12
+12-15 14:26:39.932 2234 6789 W PowerManager: App in background with GPS active
+12-15 14:26:42.164 2234 6789 E FileManager: Permission denied writing /data/logs/audit.txt
+12-15 14:26:44.395 2234 6789 F CrashHandler: Fatal error: nullptr dereference in audit
+12-15 14:26:46.627 2234 6789 V CacheManager: Snapshot saved for offline mode
+12-15 14:26:48.858 2234 6789 D SyncService: Reset exponential backoff
+12-15 14:26:51.090 2234 6789 I MainActivity: User ended diagnostics session
+12-15 14:26:53.321 2234 6789 W MemoryManager: GPU memory spike detected usage=640MB
+12-15 14:26:55.553 2234 6789 E UpdateManager: Integrity check failed chunk=7
+12-15 14:26:57.784 2234 6789 F CrashHandler: Fatal error: double free in UpdateThread
+12-15 14:27:00.016 2234 6789 V AnimationEngine: New animation sequence loaded
+12-15 14:27:02.247 2234 6789 D DatabaseHelper: Index rebuild completed on table Sessions
+12-15 14:27:04.478 2234 6789 I NotificationService: Reminder dismissed user_action=snooze
+12-15 14:27:06.710 2234 6789 W PowerManager: Device temperature critical, cooling down
+12-15 14:27:08.941 2234 6789 E SyncService: Socket closed by peer unexpectedly
+12-15 14:27:11.173 2234 6789 F CrashHandler: Fatal error: IOException 'Connection reset'
+12-15 14:27:13.404 2234 6789 V CacheManager: Adaptive cache strategy enabled
+12-15 14:27:15.635 2234 6789 D NetworkManager: Proxy settings refreshed
+12-15 14:27:17.867 2234 6789 I MainActivity: User opted into beta features
+12-15 14:27:20.098 2234 6789 W MemoryManager: Swap usage at 75%
+12-15 14:27:22.330 2234 6789 E FileManager: IOException while reading /data/certs/trust.pem
+12-15 14:27:24.561 2234 6789 F CrashHandler: Fatal error: std::system_error code=13
+12-15 14:27:26.793 2234 6789 V AnimationEngine: GPU frame pacing adjusted hz=90
+12-15 14:27:29.024 2234 6789 D SyncService: Backoff reset after success
+12-15 14:27:31.256 2234 6789 I NotificationService: Campaign 'WinterPromo' delivered
+12-15 14:27:33.487 2234 6789 W PowerManager: Bluetooth scan exceeded quota
+12-15 14:27:35.719 2234 6789 E UpdateManager: Delta patch corrupt block offset=4096
+12-15 14:27:37.950 2234 6789 F CrashHandler: Fatal error: segmentation fault in delta_apply
+12-15 14:27:40.182 2234 6789 V CacheManager: Reloaded localization bundle
+12-15 14:27:42.413 2234 6789 D NetworkManager: CDN latency measured 80ms
+12-15 14:27:44.645 2234 6789 I MainActivity: User enabled notifications
+12-15 14:27:46.876 2234 6789 W MemoryManager: Low memory killer invoked
+12-15 14:27:49.108 2234 6789 E FileManager: File handle leak detected count=12
+12-15 14:27:51.339 2234 6789 F CrashHandler: Fatal error: heap corruption detected
+12-15 14:27:53.571 2234 6789 V CacheManager: Invalidation broadcast to peers
+12-15 14:27:55.802 2234 6789 D SyncService: Completed incremental sync duration=4.2s
+12-15 14:27:58.034 2234 6789 I NotificationService: Summary notification updated
+12-15 14:28:00.265 2234 6789 W PowerManager: WakeLock held for 10m
+12-15 14:28:02.497 2234 6789 E UpdateManager: Download manifest parse error
+12-15 14:28:04.728 2234 6789 F CrashHandler: Fatal error: InvalidState 'manifest missing'
+12-15 14:28:06.960 2234 6789 V AnimationEngine: Scene graph rebuild completed
+12-15 14:28:09.191 2234 6789 D DatabaseHelper: Migrated schema version 42 -> 43
+12-15 14:28:11.423 2234 6789 I MainActivity: User toggled accessibility mode
+12-15 14:28:13.654 2234 6789 W MemoryManager: Shared memory low, releasing buffers
+12-15 14:28:15.886 2234 6789 E FileManager: Failed to sync metadata to disk
+12-15 14:28:18.117 2234 6789 F CrashHandler: Fatal error: DataLossException persisting cache
+12-15 14:28:20.349 2234 6789 V CacheManager: Preload audio cues for alerts
+12-15 14:28:22.580 2234 6789 D NetworkManager: DNS refresh complete TTL=300
+12-15 14:28:24.812 2234 6789 I NotificationService: Kiosk mode reminder fired
+12-15 14:28:27.043 2234 6789 W PowerManager: App triggered partial wakelock
+12-15 14:28:29.275 2234 6789 E SyncService: HTTP 429 Too Many Requests
+12-15 14:28:31.506 2234 6789 F CrashHandler: Fatal error: TaskCanceledException
+12-15 14:28:34.789 2234 6789 I TraceLogger: Extremely long message to test horizontal scrolling behaviour with repeated data --- Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. [context=HorizontalScrollTest, payload={"items":[{"id":1,"name":"alpha"},{"id":2,"name":"beta"},{"id":3,"name":"gamma"},{"id":4,"name":"delta"}],"flags":["very-long","edge-case","ui-test"],"metrics":{"duration_ms":4823,"bytes":1048576,"success":false}}] continuing with even more content to ensure the line exceeds typical viewport width and forces the appearance of the horizontal scrollbar for manual verification in the UI.
+
