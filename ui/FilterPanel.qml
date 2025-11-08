@@ -17,6 +17,10 @@ Rectangle {
     property color highlightGreen: "#98c379"
     property color highlightPurple: "#c678dd"
     property font iconFont: Qt.font({ family: "Segoe Fluent Icons", pointSize: 16 })
+    property color buttonHoverColor: "#3e4451"
+    property color buttonPrimaryColor: "#4a5162"
+    property color buttonIconColor: "#868d99"
+    property font textIconFont: Qt.font({ family: "Segoe Fluent Icons", pointSize: 12 })
     property alias panelColor: filterPanel.color
     property alias dividerColor: filterPanel.borderColor
     property alias textPrimary: filterPanel.textColor
@@ -116,6 +120,351 @@ Rectangle {
         }
     }
 
+    ListModel {
+        id: pidModel
+        ListElement { pidValue: "1234 (Service)"; isChecked: false }
+        ListElement { pidValue: "5678 (UI)"; isChecked: false }
+        ListElement { pidValue: "9012 (Media)"; isChecked: true }
+        ListElement { pidValue: "1111 (Network)"; isChecked: false }
+        ListElement { pidValue: "2222 (Input)"; isChecked: false }
+        ListElement { pidValue: "3333 (System)"; isChecked: false }
+    }
+
+    component CustomDialogButton: Button {
+        id: control
+        property color defaultColor: buttonPrimaryColor
+        property color hoverColor: buttonHoverColor
+        property color iconColor: buttonIconColor
+        property color textColorOverride: textPrimary
+        property string iconText: ""
+
+        implicitHeight: 34
+        implicitWidth: contentItem.implicitWidth + 24
+
+        background: Rectangle {
+            color: control.hovered ? hoverColor : defaultColor
+            border.color: borderColor
+            border.width: 1
+            radius: 4
+        }
+
+        contentItem: RowLayout {
+            spacing: 6
+            Layout.alignment: Qt.AlignVCenter
+
+            Label {
+                text: control.iconText
+                font: textIconFont
+                color: control.iconColor
+                visible: control.iconText.length > 0
+                Layout.alignment: Qt.AlignVCenter
+            }
+
+            Label {
+                text: control.text
+                color: control.textColorOverride
+                Layout.alignment: Qt.AlignVCenter
+            }
+        }
+    }
+
+    component FilterDisplayButton: Item {
+        id: controlRoot
+        implicitHeight: 32
+        implicitWidth: Math.max(displayLabel.implicitWidth + 40, 120)
+        property alias text: displayLabel.text
+        property color defaultBorder: highlightGreen
+        property color hoverBorder: "white"
+        property bool hovered: hoverArea.containsMouse
+        signal clicked()
+
+        Rectangle {
+            anchors.fill: parent
+            color: inputBgColor
+            border.width: 2
+            border.color: controlRoot.hovered ? hoverBorder : defaultBorder
+            radius: 4
+        }
+
+        Label {
+            id: displayLabel
+            text: qsTr("Select Filter...")
+            color: textPrimary
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            anchors.right: arrowLabel.left
+            anchors.rightMargin: 4
+            elide: Text.ElideRight
+        }
+
+        Label {
+            id: arrowLabel
+            text: "\u25BE"
+            color: textSecondary
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: 8
+        }
+
+        MouseArea {
+            id: hoverArea
+            anchors.fill: parent
+            hoverEnabled: true
+            cursorShape: Qt.PointingHandCursor
+            onClicked: controlRoot.clicked()
+        }
+    }
+
+    Popup {
+        id: pidFilterPopup
+        width: 450
+        implicitHeight: popupLayout.implicitHeight
+        modal: false
+        focus: true
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+        padding: 0
+
+        background: Rectangle {
+            color: panelColor
+            border.color: borderColor
+            border.width: 1
+            radius: 4
+        }
+
+        ColumnLayout {
+            id: popupLayout
+            width: parent.width
+            spacing: 0
+
+            RowLayout {
+                id: titleBar
+                Layout.fillWidth: true
+                Layout.preferredHeight: 40
+                Layout.margins: 10
+                property point dragStartPos: Qt.point(0, 0)
+
+                DragHandler {
+                    target: null
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchScreen | PointerDevice.Stylus
+                    grabPermissions: PointerHandler.CanTakeOverFromItems | PointerHandler.CanTakeOverFromHandlers
+                    onActiveChanged: if (active) titleBar.dragStartPos = Qt.point(pidFilterPopup.x, pidFilterPopup.y)
+                    onTranslationChanged: {
+                        pidFilterPopup.x = titleBar.dragStartPos.x + translation.x
+                        pidFilterPopup.y = titleBar.dragStartPos.y + translation.y
+                    }
+                }
+
+                Label {
+                    text: qsTr("Process Filter")
+                    color: textPrimary
+                    font.pixelSize: 16
+                    font.bold: true
+                    Layout.alignment: Qt.AlignVCenter
+                }
+
+                Item { Layout.fillWidth: true }
+
+                Button {
+                    id: closeButton
+                    text: "\uE8BB"
+                    font: iconFont
+                    flat: true
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: 32
+                    background: Rectangle { color: "transparent" }
+                    contentItem: Label {
+                        text: closeButton.text
+                        font: closeButton.font
+                        color: closeButton.hovered ? "white" : textSecondaryColor
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                    onClicked: pidFilterPopup.close()
+                }
+            }
+
+            Rectangle { Layout.fillWidth: true; height: 1; color: borderColor }
+
+            ColumnLayout {
+                Layout.fillWidth: true
+                Layout.margins: 15
+                spacing: 12
+
+                Label {
+                    text: qsTr("Manual Filter (use | for OR, & for AND):")
+                    color: textPrimary
+                }
+
+                CustomTextField {
+                    id: manualFilterInput
+                    placeholderText: qsTr("Example: value1|value2 or value1&value2")
+                    Layout.fillWidth: true
+                }
+
+                Label {
+                    text: qsTr("Quick Select (%1 unique values):").arg(pidModel.count)
+                    color: textPrimary
+                }
+
+                Rectangle {
+                    color: inputBgColor
+                    border.color: borderColor
+                    radius: 4
+                    Layout.fillWidth: true
+                    height: 32
+
+                    RowLayout {
+                        anchors.fill: parent
+                        anchors.leftMargin: 8
+                        anchors.rightMargin: 8
+                        spacing: 8
+
+                        Label {
+                            text: "\uE721"
+                            font: iconFont
+                            color: textSecondaryColor
+                            Layout.alignment: Qt.AlignVCenter
+                        }
+
+                        TextField {
+                            id: searchInput
+                            placeholderText: qsTr("Search in list...")
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            color: textPrimary
+                            placeholderTextColor: "#AAAAAA"
+                            background: Rectangle { color: "transparent" }
+                        }
+                    }
+                }
+
+                ScrollView {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 200
+                    clip: true
+                    background: Rectangle {
+                        color: inputBgColor
+                        border.color: borderColor
+                        radius: 4
+                    }
+
+                    ListView {
+                        id: pidListView
+                        model: pidModel
+                        spacing: 2
+
+                        delegate: CheckDelegate {
+                            id: pidDelegate
+                            width: ListView.view.width
+                            text: model.pidValue
+                            checked: model.isChecked
+                            leftPadding: 36
+                            onToggled: {
+                                pidModel.setProperty(index, "isChecked", checked)
+                                var tokens = manualFilterInput.text.split("|").filter(function(entry) {
+                                    return entry.length > 0
+                                })
+                                var existingIndex = tokens.indexOf(model.pidValue)
+                                if (checked) {
+                                    if (existingIndex === -1)
+                                        tokens.push(model.pidValue)
+                                } else if (existingIndex !== -1) {
+                                    tokens.splice(existingIndex, 1)
+                                }
+                                manualFilterInput.text = tokens.join("|")
+                            }
+                            visible: searchInput.text.length === 0
+                                     || model.pidValue.toLowerCase().indexOf(searchInput.text.toLowerCase()) !== -1
+                            padding: 8
+                            indicator: Rectangle {
+                                id: indicatorRect
+                                width: 18
+                                height: 18
+                                radius: 3
+                                border.color: borderColor
+                                border.width: 1
+                                color: pidDelegate.checked ? highlightGreen : "transparent"
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.left
+                                anchors.leftMargin: 12
+
+                                Label {
+                                    anchors.centerIn: parent
+                                    text: pidDelegate.checked ? "\uE8FB" : ""
+                                    font: textIconFont
+                                    color: pidDelegate.checked ? "#000000" : "transparent"
+                                }
+                            }
+
+                            contentItem: Label {
+                                text: model.pidValue
+                                color: textPrimary
+                                verticalAlignment: Text.AlignVCenter
+                                elide: Text.ElideRight
+                                anchors.left: indicatorRect.right
+                                anchors.leftMargin: 12
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            Rectangle { Layout.fillWidth: true; height: 1; color: borderColor }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.margins: 10
+                spacing: 10
+
+                CustomDialogButton {
+                    text: qsTr("Clear Filter")
+                    iconText: "\uE894"
+                    onClicked: {
+                        manualFilterInput.text = ""
+                        for (var i = 0; i < pidModel.count; ++i) {
+                            pidModel.setProperty(i, "isChecked", false)
+                        }
+                        processFilterButton.text = qsTr("Select Filter...")
+                        pidFilterPopup.close()
+                    }
+                }
+
+                CustomDialogButton {
+                    text: qsTr("Apply Selected")
+                    iconText: "\uE8FB"
+                    defaultColor: highlightGreen
+                    iconColor: "#000000"
+                    textColorOverride: "#000000"
+                    onClicked: {
+                        var manual = manualFilterInput.text.trim()
+                        var selected = []
+                        for (var i = 0; i < pidModel.count; ++i) {
+                            var element = pidModel.get(i)
+                            if (element.isChecked)
+                                selected.push(element.pidValue)
+                        }
+                        var selectionText = manual.length > 0 ? manual
+                                            : (selected.length > 0 ? selected.join("|") : qsTr("Select Filter..."))
+                        processFilterButton.text = selectionText
+                        pidFilterPopup.close()
+                    }
+                }
+
+                Item { Layout.fillWidth: true }
+
+                CustomDialogButton {
+                    text: qsTr("Close")
+                    onClicked: pidFilterPopup.close()
+                }
+            }
+        }
+    }
+
     // --- Bố cục chính ---
     ColumnLayout {
         id: mainLayout
@@ -144,18 +493,17 @@ Rectangle {
                 Layout.alignment: Qt.AlignVCenter
             }
 
-            // THAY ĐỔI: Chuyển ':disabled' thành ComboBox (listdown)
-            CustomComboBox {
-                id: disabledFilterCombo
-                // Bạn có thể thay đổi model này cho phù hợp
-                model: [":disabled", ":enabled", "item 3", "item 4"] 
-                currentIndex: 0 // Hiển thị ":disabled" làm mặc định
-                Layout.preferredWidth: 120 // Điều chỉnh độ rộng
-                borderColorOverride: highlightGreen
-                borderWidthOverride: 2
-                highlightOnOpen: true
+            FilterDisplayButton {
+                id: processFilterButton
+                Layout.preferredWidth: 160
+                onClicked: {
+                    var mapped = processFilterButton.mapToItem(null, 0, 0)
+                    pidFilterPopup.x = Math.min(mapped.x, filterPanel.width - pidFilterPopup.width - 10)
+                    pidFilterPopup.y = mapped.y + processFilterButton.height + 4
+                    pidFilterPopup.open()
+                }
             }
-            
+
             // Nút chuyển "OR" / "AND"
             Button {
                 id: logicSwitch
@@ -259,7 +607,6 @@ Rectangle {
                     model: highlightModel
                     delegate: RowLayout {
                         spacing: 6
-                        Layout.fillWidth: true
 
                         Rectangle {
                             width: 30
@@ -271,7 +618,6 @@ Rectangle {
                         }
 
                         CustomTextField {
-                            Layout.fillWidth: true
                             Layout.preferredWidth: 120
                             placeholderText: qsTr("Text")
                             text: model.text
